@@ -1,12 +1,28 @@
 
+def validate_sequence(sequence):
+    """
+    Validate a DNA sequence.
+    Only A, T, G and C are allowed.
+    """
+    sequence = sequence.upper()
+
+    invalid_bases = set(sequence) - {"A", "T", "G", "C"}
+
+    if invalid_bases:
+        raise ValueError(
+            f"Invalid DNA characters: {invalid_bases}"
+        )
+
+    return sequence
+
 def global_align(seq1, seq2, match=2, mismatch=-1, gap=-2):
     """
     Perform global DNA sequence alignment using
     the Needleman-Wunsch algorithm.
     """
 
-    seq1 = seq1.upper()
-    seq2 = seq2.upper()
+    seq1 = validate_sequence(seq1)
+    seq2 = validate_sequence(seq2)
 
     rows = len(seq1) + 1
     cols = len(seq2) + 1

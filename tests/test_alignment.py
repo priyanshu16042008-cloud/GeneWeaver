@@ -29,6 +29,20 @@ class TestGlobalAlignment(unittest.TestCase):
             len(result["aligned_seq2"])
         )
 
+    def test_lowercase_sequences(self):
+        result = global_align("atgc", "ATGC")
+        self.assertEqual(result["score"], 8)
+
+
+    def test_invalid_dna_sequence(self):
+        with self.assertRaises(ValueError):
+            global_align("ATGX", "ATGC")
+
+
+    def test_invalid_character_in_second_sequence(self):
+        with self.assertRaises(ValueError):
+            global_align("ATGC", "ATGN")
+
 
 if __name__ == "__main__":
     unittest.main()
