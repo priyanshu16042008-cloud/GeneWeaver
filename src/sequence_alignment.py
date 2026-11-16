@@ -4,6 +4,13 @@ def validate_sequence(sequence):
     Validate a DNA sequence.
     Only A, T, G and C are allowed.
     """
+
+    if not isinstance(sequence, str):
+        raise TypeError("DNA sequence must be a string.")
+
+    if not sequence:
+        raise ValueError("DNA sequence cannot be empty.")
+
     sequence = sequence.upper()
 
     invalid_bases = set(sequence) - {"A", "T", "G", "C"}

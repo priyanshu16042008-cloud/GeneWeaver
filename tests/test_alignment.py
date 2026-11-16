@@ -17,10 +17,8 @@ class TestGlobalAlignment(unittest.TestCase):
         self.assertEqual(result["score"], -4)
 
     def test_empty_sequence(self):
-        result = global_align("", "ATGC")
-        self.assertEqual(result["aligned_seq1"], "----")
-        self.assertEqual(result["aligned_seq2"], "ATGC")
-        self.assertEqual(result["score"], -8)
+        with self.assertRaises(ValueError):
+            global_align("", "ATGC")
 
     def test_alignment_lengths(self):
         result = global_align("ATGC", "AGC")
@@ -42,6 +40,14 @@ class TestGlobalAlignment(unittest.TestCase):
     def test_invalid_character_in_second_sequence(self):
         with self.assertRaises(ValueError):
             global_align("ATGC", "ATGN")
+
+    def test_non_string_sequence(self):
+        with self.assertRaises(TypeError):
+            global_align(12345, "ATGC")
+
+    def test_empty_second_sequence(self):
+        with self.assertRaises(ValueError):
+            global_align("ATGC", "")
 
 
 if __name__ == "__main__":
