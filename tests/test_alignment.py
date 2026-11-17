@@ -1,7 +1,7 @@
 
 import unittest
 
-from src.sequence_alignment import global_align
+from src.sequence_alignment import global_align, validate_scoring_parameters
 
 
 class TestGlobalAlignment(unittest.TestCase):
@@ -48,6 +48,33 @@ class TestGlobalAlignment(unittest.TestCase):
     def test_empty_second_sequence(self):
         with self.assertRaises(ValueError):
             global_align("ATGC", "")
+
+    def test_valid_custom_scoring(self):
+        result = global_align(
+            "ATGC", "ATGC",
+            match=3, mismatch=-2, gap=-3
+        )
+        self.assertEqual(result["score"], 12)
+
+    def test_float_match_score(self):
+        with self.assertRaises(TypeError):
+            global_align("ATGC", "ATGC", match=2.5)
+
+    def test_string_mismatch_score(self):
+        with self.assertRaises(TypeError):
+            global_align("ATGC", "ATGC", mismatch="-1")
+
+    def test_zero_match_score(self):
+        with self.assertRaises(ValueError):
+            global_align("ATGC", "ATGC", match=0)
+
+    def test_positive_mismatch_score(self):
+        with self.assertRaises(ValueError):
+            global_align("ATGC", "ATGC", mismatch=1)
+
+    def test_positive_gap_penalty(self):
+        with self.assertRaises(ValueError):
+            global_align("ATGC", "ATGC", gap=2)
 
 
 if __name__ == "__main__":

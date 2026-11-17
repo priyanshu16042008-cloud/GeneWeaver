@@ -22,11 +22,40 @@ def validate_sequence(sequence):
 
     return sequence
 
+def validate_scoring_parameters(match, mismatch, gap):
+    """
+    Validate scoring parameters.
+    All scoring values must be integers.
+    """
+
+    parameters = {
+        "match": match,
+        "mismatch": mismatch,
+        "gap": gap
+    }
+
+    for name, value in parameters.items():
+        if isinstance(value, bool) or not isinstance(value, int):
+            raise TypeError(
+                f"{name} score must be an integer."
+            )
+
+    if match <= 0:
+        raise ValueError("Match score must be positive.")
+
+    if mismatch >= 0:
+        raise ValueError("Mismatch score must be negative.")
+
+    if gap >= 0:
+        raise ValueError("Gap penalty must be negative.")
+
 def global_align(seq1, seq2, match=2, mismatch=-1, gap=-2):
     """
     Perform global DNA sequence alignment using
     the Needleman-Wunsch algorithm.
     """
+
+    validate_scoring_parameters(match, mismatch, gap)
 
     seq1 = validate_sequence(seq1)
     seq2 = validate_sequence(seq2)
