@@ -76,6 +76,23 @@ class TestGlobalAlignment(unittest.TestCase):
         with self.assertRaises(ValueError):
             global_align("ATGC", "ATGC", gap=2)
 
+    def test_alignment_with_gap(self):
+        result = global_align("ATGC", "ATC")
+
+        self.assertEqual(
+            result["aligned_seq1"].replace("-", ""),
+            "ATGC"
+        )
+        self.assertEqual(
+            result["aligned_seq2"].replace("-", ""),
+            "ATC"
+        )
+        self.assertEqual(
+            len(result["aligned_seq1"]),
+            len(result["aligned_seq2"])
+        )
+        self.assertIn("-", result["aligned_seq2"])
+
 
 if __name__ == "__main__":
     unittest.main()
