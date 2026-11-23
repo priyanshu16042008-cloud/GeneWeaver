@@ -45,6 +45,18 @@ class TestGlobalAlignment(unittest.TestCase):
         with self.assertRaises(TypeError):
             global_align(12345, "ATGC")
 
+    def test_sequence_with_spaces(self):
+        with self.assertRaises(ValueError):
+            global_align("AT GC", "ATGC")
+
+    def test_sequence_with_special_characters(self):
+        with self.assertRaises(ValueError):
+            global_align("ATG@", "ATGC")
+
+    def test_sequence_with_numbers(self):
+        with self.assertRaises(ValueError):
+            global_align("ATG123", "ATGC")
+
     def test_empty_second_sequence(self):
         with self.assertRaises(ValueError):
             global_align("ATGC", "")
