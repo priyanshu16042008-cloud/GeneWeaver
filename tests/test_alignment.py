@@ -68,6 +68,13 @@ class TestGlobalAlignment(unittest.TestCase):
         )
         self.assertEqual(result["score"], 12)
 
+    def test_custom_scoring_with_mismatch(self):
+        result = global_align(
+            "ATGC", "ATCC",
+            match=3, mismatch=-2, gap=-3
+        )
+        self.assertEqual(result["score"], 7)
+
     def test_float_match_score(self):
         with self.assertRaises(TypeError):
             global_align("ATGC", "ATGC", match=2.5)
